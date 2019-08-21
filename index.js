@@ -37,7 +37,7 @@ exports.handler = (event, context)=> {
     films = JSON.parse(event.body).films;
   }
 
-  fs.writeFileSync(tmp+'/films.txt', films.reduce((txt, film)=> txt + 'file \''+tmp+'/'+film+'\'\n', ''));
+  fs.writeFileSync(tmp+'/films.txt', films.reduce((txt, film)=> txt + 'file \''+film+'\'\n', ''));
 
   const outputFilename = (''+Math.random()).split('.')[1] + '.mp4';
   
@@ -58,7 +58,7 @@ exports.handler = (event, context)=> {
   )).then(()=>
     (new Promise((resolve, reject)=> {
       
-      const proc = spawn(ffmpeg, ['-f', 'concat', '-i', tmp+'/films.txt', '-c', 'copy', tmp + '/output.mp4']);
+      const proc = spawn(ffmpeg, ['-f', 'concat', '-safe', '0', '-i', tmp+'/films.txt', '-c', 'copy', tmp + '/output.mp4']);
 
       let err = '';
       proc.stderr.on('data', e=> err += e);
