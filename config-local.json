@@ -1,4 +1,6 @@
 {
   "FROM_BUCKET": "lambda-film-talk",
-  "TO_BUCKET": "lambda-film-talk-output"
+  "TO_BUCKET": "lambda-film-talk-output",
+  "ffmpeg": "ffmpeg",
+  "tmp": "tmp"
 }
