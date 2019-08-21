@@ -39,6 +39,8 @@ exports.handler = (event, context)=> {
 
   fs.writeFileSync(tmp+'/films.txt', films.reduce((txt, film)=> txt + 'file \''+tmp+'/'+film+'\'\n', ''));
 
+  const outputFilename = (''+Math.random()).split('.')[1] + '.mp4';
+  
   // load from s3
 
   Promise.all( films.map(film=>
@@ -73,7 +75,7 @@ exports.handler = (event, context)=> {
 
         s3.putObject({
           Bucket: TO_BUCKET,
-          Key: (''+Math.random()).split('.')[1] + '.mp4',
+          Key: outputFilename,
           Body: filedata,
           
         }, (err, response)=>
@@ -85,7 +87,7 @@ exports.handler = (event, context)=> {
   ).then(()=>
     context.done(null, {
       statusCode: 200,
-      body: 'blah',
+      body: outputFilename,
     })
   ).catch(err=> context.done(null, { statusCode: 500, body: err }));
 };
