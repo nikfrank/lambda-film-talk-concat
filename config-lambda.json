@@ -1,0 +1,4 @@
+{
+  "FROM_BUCKET": "lambda-film-talk",
+  "TO_BUCKET": "lambda-film-talk-output"
+}
