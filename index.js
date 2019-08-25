@@ -49,7 +49,7 @@ exports.handler = (event, context)=> {
         Bucket: FROM_BUCKET, Key: film
       }, (err, response)=>{
         if( err ) return reject(err);
-      
+        
         fs.writeFile(tmp+'/'+film, response.Body, err=>
           err ? reject(err) : resolve()
         )
@@ -58,7 +58,7 @@ exports.handler = (event, context)=> {
   )).then(()=>
     (new Promise((resolve, reject)=> {
       
-      const proc = spawn(ffmpeg, ['-f', 'concat', '-safe', '0', '-i', tmp+'/films.txt', '-c', 'copy', tmp + '/output.mp4']);
+      const proc = spawn(ffmpeg, ['-f', 'concat', '-safe', '0', '-i', tmp+'/films.txt', '-c', 'copy', tmp + '/'+outputFilename]);
 
       let err = '';
       proc.stderr.on('data', e=> err += e);
@@ -70,7 +70,7 @@ exports.handler = (event, context)=> {
     // then send to s3
     (new Promise((resolve, reject)=>
 
-      fs.readFile(tmp + '/output.mp4', (err, filedata)=> {
+      fs.readFile(tmp + '/'+outputFilename, (err, filedata)=> {
         if( err ) return reject(err);
 
         s3.putObject({
